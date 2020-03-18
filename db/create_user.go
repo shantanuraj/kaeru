@@ -13,10 +13,10 @@ func (db *Database) CreateUser(user models.User) (err error) {
 
 	_, err = db.conn.Exec(
 		context.Background(), `
-		insert into users(id, name, email, password_hash, salt)
-		values ($1, $2, $3, $4, $5)
+		insert into users(id, name, email, password_hash)
+		values ($1, $2, $3, $4)
 		`,
-		id, user.Name, user.Email, user.PasswordHash, user.Salt,
+		id, user.Name, user.Email, user.PasswordHash,
 	)
 
 	return err

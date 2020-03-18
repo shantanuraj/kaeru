@@ -42,7 +42,7 @@ func (l *Signup) signup(c echo.Context) error {
 		return err
 	}
 
-	hash, salt, err := hash.Password(creds.Password)
+	passwordHash, err := hash.Password(creds.Password)
 	if err != nil {
 		return err
 	}
@@ -50,8 +50,7 @@ func (l *Signup) signup(c echo.Context) error {
 	user := models.User{
 		Name:         creds.Name,
 		Email:        creds.Email,
-		PasswordHash: hash,
-		Salt:         salt,
+		PasswordHash: passwordHash,
 	}
 
 	if err := l.db.CreateUser(user); err != nil {

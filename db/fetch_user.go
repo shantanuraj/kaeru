@@ -10,11 +10,11 @@ func (db *Database) FetchUserForEmail(email string) (user models.User, err error
 
 	err = db.conn.QueryRow(
 		context.Background(), `
-		select id, name, email, password_hash, salt from users
+		select id, name, email, password_hash from users
 		where email=$1
 		`,
 		email,
-	).Scan(&user.ID, &user.Name, &user.Email, &user.PasswordHash, &user.Salt)
+	).Scan(&user.ID, &user.Name, &user.Email, &user.PasswordHash)
 
 	return
 }
