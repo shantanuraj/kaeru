@@ -3,6 +3,7 @@ package v1
 import (
 	"net/http"
 	"sixth-io/kaeru/db"
+	"sixth-io/kaeru/hash"
 	"sixth-io/kaeru/models"
 
 	"github.com/labstack/echo/v4"
@@ -11,6 +12,13 @@ import (
 // Signup implementation struct
 type Signup struct {
 	db *db.Database
+}
+
+// SignupCredentials holds the signup credentials
+type SignupCredentials struct {
+	Name     string `json:"name" form:"name" query:"name"`
+	Email    string `json:"email" form:"email" query:"email"`
+	Password string `json:"password" form:"password" query:"password"`
 }
 
 // Method to serve on
@@ -29,15 +37,28 @@ func (l *Signup) Handler() echo.HandlerFunc {
 }
 
 func (l *Signup) signup(c echo.Context) error {
-	u := new(models.User)
-	if err := c.Bind(u); err != nil {
+	creds := new(SignupCredentials)
+	if err := c.Bind(creds); err != nil {
 		return err
 	}
-	if err := l.db.CreateUser(*u); err != nil {
+
+	hash, salt, err := hash.Password(creds.Password)
+	if err != nil {
+		return err
+	}
+
+	user := models.User{
+		Name:         creds.Name,
+		Email:        creds.Email,
+		PasswordHash: hash,
+		Salt:         salt,
+	}
+
+	if err := l.db.CreateUser(user); err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
 
-	return c.JSON(http.StatusOK, u)
+	return c.JSON(http.StatusOK, creds)
 }
 
 // NewSignup returns an instance of the signup route

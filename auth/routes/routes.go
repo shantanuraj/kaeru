@@ -13,7 +13,7 @@ func Add(e *echo.Echo, db *db.Database) {
 
 	v1Routes := []v1.AuthRoute{
 		v1.NewSignup(db),
-		&v1.Login{},
+		v1.NewLogin(db),
 	}
 
 	for _, config := range v1Routes {

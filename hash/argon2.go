@@ -2,8 +2,11 @@ package hash
 
 import (
 	"crypto/rand"
+	"crypto/subtle"
 	"encoding/base64"
+	"errors"
 	"fmt"
+	"strings"
 
 	"golang.org/x/crypto/argon2"
 )
@@ -23,6 +26,11 @@ var params = hashParams{
 	memory:      64 * 1024,
 	keyLength:   48,
 }
+
+var (
+	errInvalidHash         = errors.New("the encoded hash is not in the correct format")
+	errIncompatibleVersion = errors.New("incompatible version of argon2")
+)
 
 func randomSalt(n uint32) ([]byte, error) {
 	b := make([]byte, n)
@@ -58,4 +66,57 @@ func Password(password string) (passwordHash, encodedSalt string, err error) {
 	)
 
 	return passwordHash, encodedSalt, nil
+}
+
+// Compare compares the given password against the password hash
+func Compare(password, passwordHash string) (bool, error) {
+
+	p, salt, hash, err := decodeHash(passwordHash)
+	if err != nil {
+		return false, err
+	}
+
+	// Derive the key from the other password using the same parameters.
+	otherHash := argon2.IDKey([]byte(password), salt, p.iterations, p.memory, p.parallelism, p.keyLength)
+
+	// Check that the contents of the hashed passwords are identical. Note
+	// that we are using the subtle.ConstantTimeCompare() function for this
+	// to help prevent timing attacks.
+	return subtle.ConstantTimeCompare(hash, otherHash) == 1, nil
+}
+
+func decodeHash(encodedHash string) (p *hashParams, salt, hash []byte, err error) {
+	vals := strings.Split(encodedHash, "$")
+	if len(vals) != 6 {
+		return nil, nil, nil, errInvalidHash
+	}
+
+	var version int
+	_, err = fmt.Sscanf(vals[2], "v=%d", &version)
+	if err != nil {
+		return nil, nil, nil, err
+	}
+	if version != argon2.Version {
+		return nil, nil, nil, errIncompatibleVersion
+	}
+
+	p = &hashParams{}
+	_, err = fmt.Sscanf(vals[3], "m=%d,t=%d,p=%d", &p.memory, &p.iterations, &p.parallelism)
+	if err != nil {
+		return nil, nil, nil, err
+	}
+
+	salt, err = base64.RawStdEncoding.DecodeString(vals[4])
+	if err != nil {
+		return nil, nil, nil, err
+	}
+	p.saltLength = uint32(len(salt))
+
+	hash, err = base64.RawStdEncoding.DecodeString(vals[5])
+	if err != nil {
+		return nil, nil, nil, err
+	}
+	p.keyLength = uint32(len(hash))
+
+	return p, salt, hash, nil
 }
