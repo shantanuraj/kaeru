@@ -1,0 +1,14 @@
+{
+  "name": "@kaeru/web",
+  "version": "0.0.1",
+  "description": "Kaeru Web packages",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "tslib": "^1.11.1"
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "^1.2.5"
+  }
+}
