@@ -19,17 +19,17 @@ func Add(e *echo.Echo, db *db.Database) {
 	}
 
 	for _, config := range v1Routes {
-		addv1Route(config, v1Group)
+		addv1Route(config, v1Group, db)
 	}
 }
 
-func addv1Route(route v1.AuthRoute, g *echo.Group) {
+func addv1Route(route v1.AuthRoute, g *echo.Group, db *db.Database) {
 	if route.Private() {
 		g.Add(
 			route.Method(),
 			route.URL(),
 			route.Handler(),
-			middlewares.VerifyToken,
+			middlewares.VerifyToken(db),
 		)
 	} else {
 		g.Add(route.Method(), route.URL(), route.Handler())
