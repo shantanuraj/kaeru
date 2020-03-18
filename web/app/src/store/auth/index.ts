@@ -1,8 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-
-interface Auth {
-  token: string
-}
+import { Auth } from './types'
 
 const auth = createSlice({
   name: 'auth',

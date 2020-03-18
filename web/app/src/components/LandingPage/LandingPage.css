@@ -1,0 +1,8 @@
+.landing-page {
+  flex: 1;
+  font-size: calc(10px + 4vmin);
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

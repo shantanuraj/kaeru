@@ -1,22 +1,25 @@
 import React from 'react';
 import './App.css';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import { useLoggedIn } from '../../store/auth/hooks';
+import Header from '../Header';
+import LandingPage from '../LandingPage';
 
 function App() {
+  const isLoggedIn = useLoggedIn()
   return (
     <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header />
+      <main id="App-content">
+        <Switch>
+          <Route path="/" exact component={LandingPage} />
+          <Route path="/app" exact>
+            {!isLoggedIn && <Redirect to="/login" />}
+          </Route>
+          <Route path="/login" exact></Route>
+          <Route path="/signup" exact></Route>
+        </Switch>
+      </main>
     </div>
   );
 }
