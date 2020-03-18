@@ -2,6 +2,7 @@ package v1
 
 import (
 	"net/http"
+	"sixth-io/kaeru/auth/token"
 	"sixth-io/kaeru/db"
 	"sixth-io/kaeru/hash"
 
@@ -52,7 +53,14 @@ func (l *Login) login(c echo.Context) error {
 		return c.String(http.StatusForbidden, "Invalid credentials")
 	}
 
-	return c.String(http.StatusOK, user.ID)
+	accessToken, err := token.New(user)
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(http.StatusOK, map[string]string{
+		"token": accessToken,
+	})
 }
 
 // NewLogin returns an instance of the signup route
