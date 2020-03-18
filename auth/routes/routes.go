@@ -3,19 +3,19 @@ package routes
 import (
 	"net/http"
 	v1 "sixth-io/kaeru/auth/routes/v1"
+	"sixth-io/kaeru/db"
 
 	"github.com/labstack/echo/v4"
 )
 
-var (
-	v1Routes = []v1.AuthRoute{
-		&v1.Signup{},
+// Add adds the route handler map to the echo instance
+func Add(e *echo.Echo, db *db.Database) {
+
+	v1Routes := []v1.AuthRoute{
+		v1.NewSignup(db),
 		&v1.Login{},
 	}
-)
 
-// Add adds the route handler map to the echo instance
-func Add(e *echo.Echo) {
 	for _, config := range v1Routes {
 		addv1Route(config, e)
 	}

@@ -1,21 +1,38 @@
 package main
 
 import (
-	"sixth-io/kaeru/auth/middleware"
-	"sixth-io/kaeru/auth/routes"
+	"log"
+	"os"
+	"sixth-io/kaeru/auth/server"
+	"sixth-io/kaeru/db"
+	"strings"
 
-	"github.com/labstack/echo/v4"
+	"github.com/urfave/cli/v2"
 )
 
 func main() {
-	// Echo instance
-	e := echo.New()
+	app := cli.NewApp()
+	app.Name = AppName
+	app.Usage = AppUsage
+	app.Version = AppVersion
+	app.Flags = flags
+	app.Action = run
+	err := app.Run(os.Args)
+	if err != nil {
+		log.Fatal("Unexpected runtime error", err)
+	}
+}
 
-	// Middleware
-	middleware.Add(e)
-	// Routes
-	routes.Add(e)
+func run(c *cli.Context) error {
+	dbAddress := strings.Trim(c.String(FlagDatabase), " \t\n")
+	port := strings.Trim(c.String(FlagPort), "\t\n")
+	dao := db.New(dbAddress)
 
-	// Start server
-	e.Logger.Fatal(e.Start(":4551"))
+	if err := dao.Start(); err != nil {
+		log.Fatal("Could not connect to database")
+	}
+	defer dao.Close()
+
+	server.Start(port, dao)
+	return nil
 }

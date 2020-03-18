@@ -7,7 +7,7 @@ import (
 	"github.com/jackc/pgx/v4"
 )
 
-// Database implements `Downstream`
+// Database Access Object
 type Database struct {
 	address string
 	conn    *pgx.Conn
