@@ -7,7 +7,7 @@ require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/google/uuid v1.1.1
 	github.com/jackc/pgx/v4 v4.5.0
-	github.com/labstack/echo v3.3.10+incompatible // indirect
+	github.com/labstack/echo v3.3.10+incompatible
 	github.com/labstack/echo/v4 v4.1.15
 	github.com/prometheus/common v0.9.1 // indirect
 	github.com/urfave/cli/v2 v2.2.0

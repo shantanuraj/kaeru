@@ -1,7 +1,7 @@
 package server
 
 import (
-	"sixth-io/kaeru/auth/middleware"
+	"sixth-io/kaeru/auth/middlewares"
 	"sixth-io/kaeru/auth/routes"
 	"sixth-io/kaeru/db"
 
@@ -14,7 +14,7 @@ func Start(port string, dao *db.Database) {
 	e := echo.New()
 
 	// Middleware
-	middleware.Add(e)
+	middlewares.Add(e)
 	// Routes
 	routes.Add(e, dao)
 

@@ -20,6 +20,11 @@ type LoginCredentials struct {
 	Password string `json:"password" form:"password" query:"password"`
 }
 
+// Private specifies if the route should be validated for auth or not
+func (l *Login) Private() bool {
+	return false
+}
+
 // Method to serve on
 func (l *Login) Method() string {
 	return http.MethodPost

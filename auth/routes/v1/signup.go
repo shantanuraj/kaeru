@@ -22,6 +22,11 @@ type SignupCredentials struct {
 	Password string `json:"password" form:"password" query:"password"`
 }
 
+// Private specifies if the route should be validated for auth or not
+func (l *Signup) Private() bool {
+	return false
+}
+
 // Method to serve on
 func (l *Signup) Method() string {
 	return http.MethodPost
