@@ -2,6 +2,7 @@ package v1
 
 import (
 	"net/http"
+	"sixth-io/kaeru/auth/token"
 	"sixth-io/kaeru/db"
 	"sixth-io/kaeru/hash"
 	"sixth-io/kaeru/models"
@@ -53,11 +54,20 @@ func (l *Signup) signup(c echo.Context) error {
 		PasswordHash: passwordHash,
 	}
 
-	if err := l.db.CreateUser(user); err != nil {
+	id, err := l.db.CreateUser(user)
+	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
+	user.ID = id
 
-	return c.JSON(http.StatusOK, creds)
+	accessToken, err := token.New(user)
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(http.StatusOK, map[string]string{
+		"token": accessToken,
+	})
 }
 
 // NewSignup returns an instance of the signup route

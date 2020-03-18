@@ -8,8 +8,8 @@ import (
 )
 
 // CreateUser creates the user
-func (db *Database) CreateUser(user models.User) (err error) {
-	id := uuid.New().String()
+func (db *Database) CreateUser(user models.User) (id string, err error) {
+	id = uuid.New().String()
 
 	_, err = db.conn.Exec(
 		context.Background(), `
@@ -19,5 +19,5 @@ func (db *Database) CreateUser(user models.User) (err error) {
 		id, user.Name, user.Email, user.PasswordHash,
 	)
 
-	return err
+	return
 }
