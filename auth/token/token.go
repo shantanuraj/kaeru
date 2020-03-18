@@ -7,16 +7,27 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
+// Claims are custom claims extending default ones.
+type Claims struct {
+	jwt.StandardClaims
+}
+
 // New returns a new JWT token
 func New(user models.User) (string, error) {
-	token := jwt.New(jwt.SigningMethodHS256)
-	claims := token.Claims.(jwt.MapClaims)
+	claims := &Claims{
+		jwt.StandardClaims{
+			Id:        user.ID,
+			ExpiresAt: getExpiry(),
+		},
+	}
 
-	claims["id"] = user.ID
-	claims["admin"] = false
-	claims["exp"] = oneMonthLater()
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
 	return token.SignedString([]byte(user.PasswordHash))
+}
+
+func getExpiry() int64 {
+	return oneMonthLater()
 }
 
 func oneMonthLater() int64 {
