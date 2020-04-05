@@ -17,11 +17,12 @@ export default function LoginForm () {
   const { mode } = useParams<Params>()
   const dispatch = useDispatch()
   const isSubmittingForm = useSelector(isSubmitting)
+  const isSignup = mode === 'signup'
   const formik = useFormik({
     initialValues: defaultValue,
     validate: validateField(mode as Params['mode']),
     onSubmit: (user) => {
-      const cb = mode === 'signup' ? signup : login
+      const cb = isSignup ? signup : login
       dispatch(cb(user))
     }
   })
@@ -66,7 +67,7 @@ export default function LoginForm () {
           type="submit"
           disabled={disableSubmit}
         >
-          {mode === 'signup' ? 'Sign up' : 'Log in'}
+          {isSignup ? 'Sign up' : 'Log in'}
         </button>
       </form>
     </div>
