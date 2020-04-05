@@ -11,6 +11,6 @@ export function attachToken(config: AxiosRequestConfig) {
   return config
 }
 
-export function setToken(token: string) {
-  token = token
+export function setToken(newToken: string) {
+  token = newToken
 }

@@ -1,0 +1,78 @@
+.login-form {
+  padding: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-form form {
+  flex: 1;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+}
+
+.login-form div.field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 30px;
+  min-height: 120px;
+}
+
+.login-form label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.55px;
+  line-height: 1.45;
+  text-transform: uppercase;
+  text-align: left;
+  margin-bottom: 5px;
+}
+
+.login-form input {
+  height: 72px;
+  font-size: 21px;
+  padding: 0 20px;
+  border: .2rem solid #e3e8eb;
+  border-radius: .4rem;
+  box-shadow: none;
+  color: #282a2d;
+  display: block;
+  outline: none;
+  resize: none;
+  transition: border-color .3s;
+}
+
+.login-form span.error {
+  margin-top: 5px;
+}
+
+.login-form button {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  background-color: coral;
+  border: 0;
+  border-radius: 24px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: GTWalsheim,Arial,sans-serif;
+  font-weight: 500;
+  height: 48px;
+  min-width: 218px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  width: auto;
+  padding: 0 15px;
+  outline: none;
+}
+
+.login-form button:active {
+  background-color: rgb(184, 89, 55);
+}
