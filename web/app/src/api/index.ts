@@ -2,10 +2,10 @@ import axios from 'axios'
 
 import { attachToken } from './headers'
 
-const API_HOST = process.env.API_HOST
+const AUTH_HOST = process.env.REACT_APP_AUTH_HOST
 
 export const auth = axios.create({
-  baseURL: `${API_HOST}/v1`,
+  baseURL: `${AUTH_HOST}/v1`,
 })
 
 auth.interceptors.request.use(attachToken)

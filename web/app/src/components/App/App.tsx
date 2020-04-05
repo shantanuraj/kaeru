@@ -4,6 +4,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import { useLoggedIn } from '../../store/auth/hooks';
 import Header from '../Header';
 import LandingPage from '../LandingPage';
+import LoginForm from '../LoginForm';
 
 function App() {
   const isLoggedIn = useLoggedIn()
@@ -16,8 +17,7 @@ function App() {
           <Route path="/app" exact>
             {!isLoggedIn && <Redirect to="/login" />}
           </Route>
-          <Route path="/login" exact></Route>
-          <Route path="/signup" exact></Route>
+          <Route path="/:mode(login|signup)" exact component={LoginForm} />
         </Switch>
       </main>
     </div>
