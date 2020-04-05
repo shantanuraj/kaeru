@@ -15,3 +15,6 @@ auth/cmd/auth
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
+# Debug builds
+__debug_*

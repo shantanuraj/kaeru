@@ -3,10 +3,12 @@ package db
 import (
 	"context"
 	"sixth-io/kaeru/models"
+
+	"github.com/jackc/pgx/v4"
 )
 
 // FetchUserForEmail fetches the user for given email
-func (db *Database) FetchUserForEmail(email string) (user models.User, err error) {
+func (db *Database) FetchUserForEmail(email string) (user models.User, noMatch bool, err error) {
 
 	err = db.conn.QueryRow(
 		context.Background(), `
@@ -15,6 +17,8 @@ func (db *Database) FetchUserForEmail(email string) (user models.User, err error
 		`,
 		email,
 	).Scan(&user.ID, &user.Name, &user.Email, &user.PasswordHash)
+
+	noMatch = err == pgx.ErrNoRows
 
 	return
 }

@@ -45,7 +45,10 @@ func (l *Login) login(c echo.Context) error {
 	if err := c.Bind(creds); err != nil {
 		return err
 	}
-	user, err := l.db.FetchUserForEmail(creds.Email)
+	user, noMatch, err := l.db.FetchUserForEmail(creds.Email)
+	if noMatch {
+		return c.String(http.StatusForbidden, "Invalid credentials")
+	}
 	if err != nil {
 		return err
 	}
