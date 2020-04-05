@@ -10,14 +10,10 @@ export default function Header() {
     <header className="App-header">
       {!isLoggedIn && (
         <nav>
-          <Link to="/login">
-            Login
-          </Link>
-          <Link to="/signup">
-            Create Account
-          </Link>
+          <Link to="/login">Login</Link>
+          <Link to="/signup">Create Account</Link>
         </nav>
       )}
     </header>
-  )
+  );
 }

@@ -7,7 +7,7 @@ import LandingPage from '../LandingPage';
 import LoginForm from '../LoginForm';
 
 function App() {
-  const isLoggedIn = useLoggedIn()
+  const isLoggedIn = useLoggedIn();
   return (
     <div className="App">
       <Header />

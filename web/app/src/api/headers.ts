@@ -1,16 +1,16 @@
-import { AxiosRequestConfig } from 'axios'
+import { AxiosRequestConfig } from 'axios';
 
-let token: null | string = null
+let token: null | string = null;
 
 export function attachToken(config: AxiosRequestConfig) {
   if (token) {
     config.headers = {
-      'Authorization': `Bearer:${token}`
-    }
+      Authorization: `Bearer:${token}`,
+    };
   }
-  return config
+  return config;
 }
 
 export function setToken(newToken: string) {
-  token = newToken
+  token = newToken;
 }
